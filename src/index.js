@@ -2,71 +2,67 @@ import key from './key.js';
 import './main.css';
 import axios from 'axios';
 import parseData from './parseData.js';
+import mockData from '../test/mockData';
 
 $('#submit-button').on('click', fetchWeatherDataOnClick);
 
 function fetchWeatherDataOnClick() {
-  const parent = document.getElementById('bottom-main');
-  const child = document.getElementById('list-wrapper');
-  const cityTitleParent = document.getElementById('city-name-wrapper');
-  const cityTitleNode = document.getElementById('city-title');
-  if (child || cityTitleNode) {
-    parent.removeChild(child);
-    cityTitleParent.removeChild(cityTitleNode);
-  }
-  const userInput = document.getElementById('user-input').value;
-  fetchData(userInput);
-  document.getElementById('user-input').value = "";
+  $('#bottom-main').children().remove();
+  const userInput = $('#user-input').val();
+  const url = createUrl(userInput);
+  fetchWeatherData(url);
+  // const weatherData = parseData(mockData.list);
+  // const city = mockData.city.name;
+  // displayData(weatherData, city);
+  $('#user-input').val("");
 }
 
-async function fetchData(query) {
+function createUrl(query) {
+  let url;
   if (!isNaN(parseInt(query))) {
-    const byZipCodeUrl = `https://api.openweathermap.org/data/2.5/forecast?zip=${query},US&APPID=${key}`;
-    const response = await axios.get(byZipCodeUrl);
-    const city = response.data.city.name;
-    const weatherData = parseData(response.data.list);
-    displayData(weatherData, city);
+    url = `https://api.openweathermap.org/data/2.5/forecast?zip=${query},US&APPID=${key}`;
   } else if (isNaN(parseInt(query))) {
-    const byCityUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${query},us&mode=json&APPID=${key}`;
-    const response = await axios.get(byCityUrl);
-    const city = response.data.city.name;
-    const weatherData = parseData(response.data.list);
-    displayData(weatherData, city);
+    url = `https://api.openweathermap.org/data/2.5/forecast?q=${query},us&mode=json&APPID=${key}`;
   }
+  return url;
 }
 
-function displayCityName(city) {
-  let h1 = document.createElement('h1');
-  h1.setAttribute('id', 'city-title');
-  h1.textContent = city;
-  return h1;
+async function fetchWeatherData(url) {
+  try {
+    let response = await axios.get(url);
+    const weatherData = parseData(response.data.list);
+    const city = response.data.city.name;
+    displayData(weatherData, city);
+  } catch (error) {
+    $('#city-name').text(`Something went wrong. Try again...`);
+  }
 }
 
 function displayData(weatherData, city) {
-  const cityNameWrapper = document.getElementById('city-name-wrapper');
-  const section = document.getElementById('bottom-main');
-  const fragment = document.createDocumentFragment();
-  const listWrapper = document.createElement('div');
-  const cityName = displayCityName(city);
-
-  listWrapper.setAttribute('id', 'list-wrapper');
-  cityNameWrapper.appendChild(cityName);
+  $('#city-name').text(city);
+  const section = $('#bottom-main');
+  const fragment = $(document.createDocumentFragment());
+  const listWrapper = $('<div></div>', {
+    id: 'list-wrapper'
+  });
 
   for (let day in weatherData) {
     let date = weatherData[day];
-    let dateCard = document.createElement('article');
-    dateCard.textContent = 'Date: ' + day;
-    listWrapper.appendChild(dateCard);
-    fragment.appendChild(listWrapper);
+    let dateCard = $('<article></article>', {
+      html: `Date: ${day}`
+    });
+    listWrapper.append(dateCard);
 
     for (let time in date) {
-      let timeUL = document.createElement('ul');
-      let timeLI = document.createElement('li');
-      timeUL.textContent = 'Time: ' + time;
-      timeLI.textContent = 'Temp: ' + date[time];
-      dateCard.appendChild(timeUL);
-      timeUL.appendChild(timeLI);
+      let timeUl = $('<ul><li></li></ul>', {
+        html: `Time: ${time}`
+      })
+        .find('li')
+        .html(`Temp: ${date[time]}`)
+        .end();
+      dateCard.append(timeUl);
     }
   }
-  section.appendChild(fragment);
+  fragment.append(listWrapper);
+  section.append(fragment);
 }

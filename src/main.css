@@ -21,7 +21,7 @@ body {
 
 header {
   height: 10%;
-  background-color: #170fa1;
+  background-color: #f2eae9;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,6 +107,9 @@ li {
   text-align: left;
 }
 
-#city-title {
+#city-name {
+  background-color: red;
+  height: 50px;
+  width: 50%;
   font-size: 20px;
 }
