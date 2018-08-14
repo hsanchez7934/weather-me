@@ -56,8 +56,6 @@ function displayData(weatherData, city) {
     let dateCard = $('<article></article>', {
       html: `Date: ${day}`
     });
-    listWrapper.append(dateCard);
-
     for (let time in date) {
       let ul = $('<ul></ul>', {
         html: `Time: ${time}`,
@@ -70,6 +68,7 @@ function displayData(weatherData, city) {
       ul.append(li);
       dateCard.append(ul);
     }
+    listWrapper.append(dateCard);
   }
 
   fragment.append(listWrapper);
