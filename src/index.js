@@ -84,8 +84,7 @@ function createGraph(data) {
 
   const chart = d3.select('#graph-container').append('svg');
 
-  chart.attr('width', svgWidth)
-    .attr('height', svgHeight);
+  chart.attr('width', svgWidth).attr('height', svgHeight);
 
   const group = chart.append('g')
     .attr('transform', "translate("+ margin.left +","+ margin.top +")");
