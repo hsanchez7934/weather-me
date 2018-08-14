@@ -9,11 +9,15 @@ $('#submit-button').on('click', fetchWeatherDataOnClick);
 function fetchWeatherDataOnClick() {
   $('#bottom-main').children().remove();
   const userInput = $('#user-input').val();
-  const url = createUrl(userInput);
-  fetchWeatherData(url);
-  // const weatherData = parseData(mockData.list);
-  // const city = mockData.city.name;
-  // displayData(weatherData, city);
+  // if (userInput === "") {
+  //   $('#city-name').text('Enter city name or zip code.');
+  //   return;
+  // }
+  // const url = createUrl(userInput);
+  // fetchWeatherData(url);
+  const weatherData = parseData(mockData.list);
+  const city = mockData.city.name;
+  displayData(weatherData, city);
   $('#user-input').val("");
 }
 
@@ -45,7 +49,7 @@ function displayData(weatherData, city) {
   const listWrapper = $('<div></div>', {
     id: 'list-wrapper'
   });
-
+  // console.log(weatherData);
   for (let day in weatherData) {
     let date = weatherData[day];
     let dateCard = $('<article></article>', {
@@ -54,15 +58,19 @@ function displayData(weatherData, city) {
     listWrapper.append(dateCard);
 
     for (let time in date) {
-      let timeUl = $('<ul><li></li></ul>', {
-        html: `Time: ${time}`
-      })
-        .find('li')
-        .html(`Temp: ${date[time]}`)
-        .end();
-      dateCard.append(timeUl);
+      let ul = $('<ul></ul>', {
+        html: `Time: ${time}`,
+        class: 'time-ul'
+      });
+      let li = $('<li></li>', {
+        html: `Temp: ${date[time]}`,
+        class: 'time-li'
+      });
+      ul.append(li);
+      dateCard.append(ul);
     }
   }
+
   fragment.append(listWrapper);
   section.append(fragment);
 }
