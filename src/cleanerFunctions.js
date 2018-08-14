@@ -1,6 +1,7 @@
 import kelvinToFahrenheit from 'kelvin-to-fahrenheit';
+import moment from 'moment';
 
-export default function parseData(weatherData) {
+export function parseData(weatherData) {
   return weatherData.reduce((acc, item) => {
     if (!acc[item.dt_txt.slice(0, 10)]) {
       acc[item.dt_txt.slice(0, 10)] = {};
@@ -9,4 +10,12 @@ export default function parseData(weatherData) {
     }
     return acc;
   }, {});
+}
+
+export function createGraphData(weatherData) {
+  return weatherData.map(item => {
+    let date = moment.unix(item.dt)._d;
+    let temp = kelvinToFahrenheit(item.main.temp);
+    return { date, temp };
+  });
 }

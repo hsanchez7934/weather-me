@@ -2,7 +2,7 @@ const jsdom = require('mocha-jsdom');
 import {expect} from 'chai';
 import mockData from './mockData.js';
 import setup from './setup';
-import parseData from '../src/parseData';
+import { parseData } from '../src/cleanerFunctions';
 const server = require('../server.js');
 const chai = require('chai');
 const should = chai.should();
@@ -18,7 +18,7 @@ describe('parseDataFunction', () => {
     weatherData = mockData.list;
   });
 
-  it(`should clean data and return expected object`, () => {
+  it(`parseData function should clean data and return expected object`, () => {
     const expected = {
       '2018-08-08': {
         '18:00:00': '85.59 F',

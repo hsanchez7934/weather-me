@@ -102,7 +102,6 @@ button:hover {
 }
 
 article {
-  border: 1px solid #fff;
   padding: 20px;
   color: #fff;
 }
@@ -121,4 +120,24 @@ article {
   width: 50%;
   font-size: 30px;
   padding-top: 10px;
+}
+
+#graph-container {
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+path {
+stroke: steelblue;
+fill: none;
+stroke-width: 2;
+}
+
+.axis path, .axis line{
+fill: none;
+stroke: grey;
+stroke-width: 1;
+shape-rendering: crispEdges;
 }
