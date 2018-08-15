@@ -1,6 +1,6 @@
 # Weather Me Updated: Refactored code, d3 integration
 
-Link to live application: https://weather-me-hsanchez.herokuapp.com/
+Link to live application: https://hs-weather-me-2.herokuapp.com/
 
 
 # Application Description
