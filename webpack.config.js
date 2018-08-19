@@ -9,11 +9,13 @@ const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
 module.exports = {
   entry: {
     main: './src/index.js',
-    test: "mocha!./test/test.js"
+    test: "./test/test.js",
+    test_set_up: "./test/setup.js",
+    parse: './src/cleanerFunctions.js'
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'main.js'
+    filename: '[name].js'
   },
   module: {
     rules: [{
@@ -39,6 +41,10 @@ module.exports = {
       path.resolve(__dirname, 'test')
     ],
     extensions: ['.js', '.json', '.css']
+  },
+  node: {
+    fs: "empty",
+    net: 'empty',
   },
   watch: true,
   mode: 'development',
